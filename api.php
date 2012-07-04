@@ -30,8 +30,8 @@ $config_data = array
 	// pvpgn database name
 	'db_name' => 'bnet',
 	
-	// pvpgn "bnet" table name
-	'table_bnet' => 'bnet',
+	// pvpgn table prefix
+	'table_prefix' => 'pvpgn_',
 	
 	
 /* D2GS TELNET OPTIONS */
@@ -365,7 +365,7 @@ class Controller
 	private function getDB()
 	{
 		if ($this->_db === null)
-			$this->_db = new DB($this->config->db_type, $this->config->db_name, $this->config->db_host, $this->config->db_user, $this->config->db_pass);
+			$this->_db = new DB($this->config->db_type, $this->config->db_name, $this->config->db_host, $this->config->db_user, $this->config->db_pass, $this->config->table_prefix);
 			
 		return $this->_db;
 	}
@@ -544,9 +544,11 @@ class DB
 {
 	private $dbh;
 	private $table_bnet;
+	private $prefix;
 	
-	function __construct($type, $name, $host = false, $user = false, $pass = false)
+	function __construct($type, $name, $host = false, $user = false, $pass = false, $table_prefix = false)
 	{
+		$this->prefix = $table_prefix;
 		try
 		{
 			// create connection
@@ -578,7 +580,7 @@ class DB
 	// get account data in assoc array
 	public function getAccount($username)
 	{
-		$sth = $this->dbh->prepare("SELECT * FROM BNET WHERE username = ?");  
+		$sth = $this->dbh->prepare('SELECT * FROM ' . $this->prefix . 'BNET WHERE username = ?');  
 		$sth->bindParam(1, strtolower($username) );  
 		$sth->execute();
 		
