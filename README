@@ -1,0 +1,3 @@
+API for a D2GS server that communicates with a D2SManager API service http://d2smanager.harpywar.com
+
+It can be used by your own application for edit Diablo 2 characters. For example, online web infinite stash that can be used by players to store their ingame items, or a web store, auction, etc.
